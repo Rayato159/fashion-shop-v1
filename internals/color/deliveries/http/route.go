@@ -8,4 +8,7 @@ import (
 func MapColorRoute(r fiber.Router, h color.Handler) {
 	r.Get("/", h.GetAllColor)
 	r.Get("/:color", h.GetColorByKey)
+	r.Post("/create", h.CreateColor)
+	r.Post("/bulk", h.CreateColorButBulk)
+	r.Delete("/:color/delete", h.DeleteColor)
 }

@@ -9,6 +9,10 @@ type Color struct {
 	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
 }
 
+type CreateColor struct {
+	Color string `db:"color" json:"color"`
+}
+
 type FindOneColor struct {
 	Color string `db:"color" json:"color"`
 }

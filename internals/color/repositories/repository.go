@@ -45,20 +45,44 @@ func (r *colorRepo) GetAllColor(f *models.ColorFilter) ([]*models.Color, error) 
 }
 
 func (r *colorRepo) GetColorByKey(f string) (*models.Color, error) {
-	colorQuery := fmt.Sprintf("SELECT * FROM colors WHERE color = '%s';", f)
+	colorQuery := fmt.Sprintf("SELECT * FROM colors WHERE color = '%s' LIMIT 1;", f)
 
-	rows, err := r.db.Queryx(colorQuery)
+	colorOne := new(models.Color)
+	err := r.db.Get(colorOne, colorQuery)
 	if err != nil {
 		return nil, fmt.Errorf("query has failed with error: %w", err)
 	}
-	defer rows.Close()
-
-	colorOne := new(models.Color)
-	for rows.Next() {
-		if err := rows.StructScan(&colorOne); err != nil {
-			return nil, fmt.Errorf("query has failed with error: %w", err)
-		}
-	}
-
 	return colorOne, nil
+}
+
+func (r *colorRepo) CreateColor(c *models.CreateColor) error {
+	createColorQuery := fmt.Sprintf(`INSERT INTO colors (color) VALUES('%s')`, c.Color)
+
+	_, err := r.db.Queryx(createColorQuery)
+	if err != nil {
+		return fmt.Errorf("query has failed with error: %w", err)
+	}
+	return nil
+}
+
+func (r *colorRepo) CreateColorButBulk(c []models.CreateColor) error {
+	createColorBulkQuery := `
+		INSERT INTO colors (color)
+		VALUES (:color)
+	`
+	_, err := r.db.NamedExec(createColorBulkQuery, c)
+	if err != nil {
+		return fmt.Errorf("query has failed with error: %w", err)
+	}
+	return nil
+}
+
+func (r *colorRepo) DeleteColor(c string) error {
+	deleteColorQuery := fmt.Sprintf(`DELETE FROM colors WHERE color = '%s'`, c)
+
+	_, err := r.db.Exec(deleteColorQuery)
+	if err != nil {
+		return fmt.Errorf("query has failed with error: %w", err)
+	}
+	return nil
 }
