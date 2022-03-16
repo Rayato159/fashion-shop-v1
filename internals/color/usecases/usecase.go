@@ -57,7 +57,7 @@ func (u *colorUC) CreateColorButBulk(c []models.CreateColor) ([]*models.Color, e
 	}
 
 	var colorResults = make([]*models.Color, 0)
-	for i, _ := range c {
+	for i := range c {
 		color, err := u.colorRepo.GetColorByKey(c[i].Color)
 		if err != nil {
 			return nil, fmt.Errorf("error: %w", err)
