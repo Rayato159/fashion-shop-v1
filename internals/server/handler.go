@@ -17,6 +17,10 @@ import (
 	patternRepository "github.com/rayato159/fashion-shop/v1/internals/pattern/repositories"
 	patternUseCase "github.com/rayato159/fashion-shop/v1/internals/pattern/usecases"
 
+	categoryHttp "github.com/rayato159/fashion-shop/v1/internals/category/deliveries/http"
+	categoryRepository "github.com/rayato159/fashion-shop/v1/internals/category/repositories"
+	categoryUseCase "github.com/rayato159/fashion-shop/v1/internals/category/usecases"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
@@ -42,6 +46,12 @@ func (s *Server) MapHandlers(a *fiber.App) error {
 	figureUC := figureUseCase.NewFigureUseCase(figureRepo)
 	figureHandler := figureHttp.NewFigureHandler(figureUC)
 	figureHttp.MapFigureRoute(figureGroup, figureHandler)
+
+	categoryGroup := api.Group("/categories")
+	categoryRepo := categoryRepository.NewCategoryRepository(s.db)
+	categoryUC := categoryUseCase.NewCategoryUseCase(categoryRepo)
+	categoryHandler := categoryHttp.NewCategoryHandler(categoryUC)
+	categoryHttp.MapCategoryRoute(categoryGroup, categoryHandler)
 
 	a.Use(func(c *fiber.Ctx) error {
 		log.Println("error, endpoint not found.")

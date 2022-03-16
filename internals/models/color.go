@@ -10,13 +10,13 @@ type Color struct {
 }
 
 type CreateColor struct {
-	Color string `db:"color" json:"color"`
+	Color string `json:"color"`
 }
 
 type FindOneColor struct {
-	Color string `db:"color" json:"color"`
+	Color string `json:"color"`
 }
 
 type ColorFilter struct {
-	Color string `db:"color" json:"color"`
+	Color string `json:"color"`
 }
