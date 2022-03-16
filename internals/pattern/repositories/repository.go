@@ -37,6 +37,7 @@ func (r *patternRepo) GetAllPattern(f *models.FilterPattern) ([]*models.Pattern,
 		}
 		patternLists = append(patternLists, &pattern)
 	}
+	defer rows.Close()
 
 	if err = rows.Err(); err != nil {
 		return nil, fmt.Errorf("query has failed with error: %w", err)

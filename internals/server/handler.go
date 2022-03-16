@@ -5,6 +5,10 @@ import (
 
 	"github.com/rayato159/fashion-shop/v1/internals/models"
 
+	figureHttp "github.com/rayato159/fashion-shop/v1/internals/figure/deliveries/http"
+	figureRepository "github.com/rayato159/fashion-shop/v1/internals/figure/repositories"
+	figureUseCase "github.com/rayato159/fashion-shop/v1/internals/figure/usecases"
+
 	colorHttp "github.com/rayato159/fashion-shop/v1/internals/color/deliveries/http"
 	colorRepository "github.com/rayato159/fashion-shop/v1/internals/color/repositories"
 	colorUseCase "github.com/rayato159/fashion-shop/v1/internals/color/usecases"
@@ -32,6 +36,12 @@ func (s *Server) MapHandlers(a *fiber.App) error {
 	patternUC := patternUseCase.NewPatternUseCase(patternRepo)
 	patternHandler := patternHttp.NewPatternHandler(patternUC)
 	patternHttp.MapPatternRoute(patternGroup, patternHandler)
+
+	figureGroup := api.Group("/figures")
+	figureRepo := figureRepository.NewFigureRepository(s.db)
+	figureUC := figureUseCase.NewFigureUseCase(figureRepo)
+	figureHandler := figureHttp.NewFigureHandler(figureUC)
+	figureHttp.MapFigureRoute(figureGroup, figureHandler)
 
 	a.Use(func(c *fiber.Ctx) error {
 		log.Println("error, endpoint not found.")
