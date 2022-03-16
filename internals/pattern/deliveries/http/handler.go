@@ -61,9 +61,9 @@ func (h *patternHandler) CreatePattern(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.ErrInternalServerError)
 	}
 
-	return c.Status(200).JSON(fiber.Map{
-		"status":   fiber.StatusOK,
-		"messsage": "OK",
+	return c.Status(201).JSON(fiber.Map{
+		"status":   fiber.StatusCreated,
+		"messsage": "Created",
 	})
 }
 
@@ -78,9 +78,9 @@ func (h *patternHandler) CreatePatternButBulk(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.ErrInternalServerError)
 	}
 
-	return c.Status(200).JSON(fiber.Map{
-		"status":   fiber.StatusOK,
-		"messsage": "OK",
+	return c.Status(201).JSON(fiber.Map{
+		"status":   fiber.StatusCreated,
+		"messsage": "Created",
 		"data":     patterns,
 	})
 }

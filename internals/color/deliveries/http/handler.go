@@ -63,7 +63,7 @@ func (h *colorHandler) CreateColor(c *fiber.Ctx) error {
 	}
 
 	return c.Status(201).JSON(fiber.Map{
-		"status":   fiber.StatusOK,
+		"status":   fiber.StatusCreated,
 		"messsage": "Created",
 		"data":     colorResult,
 	})
@@ -80,7 +80,7 @@ func (h *colorHandler) CreateColorButBulk(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.ErrInternalServerError)
 	}
 	return c.Status(201).JSON(fiber.Map{
-		"status":   fiber.StatusOK,
+		"status":   fiber.StatusCreated,
 		"messsage": "Created",
 		"data":     dbData,
 	})
@@ -94,7 +94,7 @@ func (h *colorHandler) DeleteColor(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.ErrInternalServerError)
 	}
 	return c.Status(201).JSON(fiber.Map{
-		"status":   fiber.StatusOK,
+		"status":   fiber.StatusCreated,
 		"messsage": "OK",
 	})
 }
