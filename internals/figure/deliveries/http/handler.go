@@ -17,12 +17,18 @@ func NewFigureHandler(figureUC figure.UseCase) figure.Handler {
 func (h *figureHandler) GetAllFigure(c *fiber.Ctx) error {
 	f := new(models.FigureFilter)
 	if err := c.QueryParser(f); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	figures, err := h.figureUC.GetAllFigure(f)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	if len(figures) == 0 {
@@ -39,7 +45,10 @@ func (h *figureHandler) GetFigureByKey(c *fiber.Ctx) error {
 	k := c.Params("figure")
 	figure, err := h.figureUC.GetFigureByKey(k)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
@@ -53,11 +62,17 @@ func (h *figureHandler) CreateFigure(c *fiber.Ctx) error {
 	f := new(models.CreateFigure)
 
 	if err := c.BodyParser(f); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	if err := h.figureUC.CreateFigure(f); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	return c.Status(201).JSON(fiber.Map{
@@ -70,12 +85,18 @@ func (h *figureHandler) CreateFigureButBulk(c *fiber.Ctx) error {
 	f := new([]models.CreateFigure)
 
 	if err := c.BodyParser(f); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	figures, err := h.figureUC.CreateFigureButBulk(*f)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 	return c.Status(201).JSON(fiber.Map{
 		"status":   fiber.StatusCreated,
@@ -88,7 +109,10 @@ func (h *figureHandler) DeleteFigure(c *fiber.Ctx) error {
 	k := c.Params("figure")
 
 	if err := h.figureUC.DeleteFigure(k); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{

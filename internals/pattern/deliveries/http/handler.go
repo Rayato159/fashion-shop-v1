@@ -17,12 +17,18 @@ func NewPatternHandler(patternUC pattern.UseCase) pattern.Handler {
 func (h *patternHandler) GetAllPattern(c *fiber.Ctx) error {
 	q := new(models.FilterPattern)
 	if err := c.QueryParser(q); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	patterns, err := h.patternUC.GetAllPattern(q)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	} else if len(patterns) == 0 {
 		return c.Status(404).JSON(fiber.ErrNotFound)
 	}
@@ -39,7 +45,10 @@ func (h *patternHandler) GetPatternByKey(c *fiber.Ctx) error {
 
 	pattern, err := h.patternUC.GetPatternByKey(key)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
@@ -53,12 +62,18 @@ func (h *patternHandler) CreatePattern(c *fiber.Ctx) error {
 	p := new(models.CreatePattern)
 
 	if err := c.BodyParser(p); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	err := h.patternUC.CreatePattern(p)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	return c.Status(201).JSON(fiber.Map{
@@ -70,12 +85,18 @@ func (h *patternHandler) CreatePattern(c *fiber.Ctx) error {
 func (h *patternHandler) CreatePatternButBulk(c *fiber.Ctx) error {
 	p := new([]models.CreatePattern)
 	if err := c.BodyParser(p); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	patterns, err := h.patternUC.CreatePatternButBulk(*p)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	return c.Status(201).JSON(fiber.Map{
@@ -89,7 +110,10 @@ func (h *patternHandler) DeletePattern(c *fiber.Ctx) error {
 	k := c.Params("pattern")
 
 	if err := h.patternUC.DeletePattern(k); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 	return c.Status(200).JSON(fiber.Map{
 		"status":   fiber.StatusOK,

@@ -11,12 +11,12 @@ type Category struct {
 }
 
 type CreateCategory struct {
-	Gender  GenderEnum `json:"gender"`
-	Size    SizeEnum   `json:"size"`
-	Price   float32    `json:"price"`
-	Color   string     `json:"color"`
-	Pattern string     `json:"pattern"`
-	Figure  string     `json:"figure"`
+	Gender  GenderEnum `json:"gender" form:"gender"`
+	Size    SizeEnum   `json:"size" form:"size"`
+	Price   float32    `json:"price" form:"price"`
+	Color   string     `json:"color" form:"color"`
+	Pattern string     `json:"pattern" form:"pattern"`
+	Figure  string     `json:"figure" form:"figure"`
 }
 
 // enum

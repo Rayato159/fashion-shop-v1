@@ -18,11 +18,17 @@ func (h *categoryHandler) CreateCategory(c *fiber.Ctx) error {
 	cc := new(models.CreateCategory)
 
 	if err := c.BodyParser(cc); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	if err := h.categoryUC.CreateCategory(cc); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	return c.Status(201).JSON(fiber.Map{
@@ -34,7 +40,10 @@ func (h *categoryHandler) CreateCategory(c *fiber.Ctx) error {
 func (h *categoryHandler) GetAllCategory(c *fiber.Ctx) error {
 	categories, err := h.categoryUC.GetAllCategory()
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	if len(categories) == 0 {

@@ -10,13 +10,9 @@ type Figure struct {
 }
 
 type CreateFigure struct {
-	Figure string `json:"figure"`
-}
-
-type FindOneFigure struct {
-	Figure string `json:"figure"`
+	Figure string `json:"figure" form:"figure"`
 }
 
 type FigureFilter struct {
-	Figure string `json:"figure"`
+	Figure string `json:"figure" query:"figure"`
 }

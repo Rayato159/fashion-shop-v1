@@ -10,13 +10,9 @@ type Pattern struct {
 }
 
 type CreatePattern struct {
-	Pattern string `json:"pattern"`
-}
-
-type FindOnePattern struct {
-	Pattern string `json:"pattern"`
+	Pattern string `json:"pattern" form:"pattern"`
 }
 
 type FilterPattern struct {
-	Pattern string `json:"pattern"`
+	Pattern string `json:"pattern" query:"pattern"`
 }

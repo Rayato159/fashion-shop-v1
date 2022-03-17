@@ -22,7 +22,10 @@ func (h *colorHandler) GetAllColor(c *fiber.Ctx) error {
 
 	colors, err := h.colorUC.GetAllColor(f)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	if len(colors) == 0 {
@@ -41,7 +44,10 @@ func (h *colorHandler) GetColorByKey(c *fiber.Ctx) error {
 
 	colorData, err := h.colorUC.GetColorByKey(f)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
@@ -54,12 +60,18 @@ func (h *colorHandler) GetColorByKey(c *fiber.Ctx) error {
 func (h *colorHandler) CreateColor(c *fiber.Ctx) error {
 	newColor := new(models.CreateColor)
 	if err := c.BodyParser(newColor); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	colorResult, err := h.colorUC.CreateColor(newColor)
 	if err != nil {
-		return err
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	return c.Status(201).JSON(fiber.Map{
@@ -72,12 +84,18 @@ func (h *colorHandler) CreateColor(c *fiber.Ctx) error {
 func (h *colorHandler) CreateColorButBulk(c *fiber.Ctx) error {
 	newColor := new([]models.CreateColor)
 	if err := c.BodyParser(&newColor); err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 
 	dbData, err := h.colorUC.CreateColorButBulk(*newColor)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 	return c.Status(201).JSON(fiber.Map{
 		"status":   fiber.StatusCreated,
@@ -91,7 +109,10 @@ func (h *colorHandler) DeleteColor(c *fiber.Ctx) error {
 
 	err := h.colorUC.DeleteColor(colorDeleted)
 	if err != nil {
-		return c.Status(500).JSON(fiber.ErrInternalServerError)
+		return c.Status(500).JSON(fiber.Map{
+			"status":  fiber.StatusInternalServerError,
+			"message": err.Error(),
+		})
 	}
 	return c.Status(201).JSON(fiber.Map{
 		"status":   fiber.StatusCreated,
