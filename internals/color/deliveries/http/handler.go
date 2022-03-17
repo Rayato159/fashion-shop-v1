@@ -114,8 +114,8 @@ func (h *colorHandler) DeleteColor(c *fiber.Ctx) error {
 			"message": err.Error(),
 		})
 	}
-	return c.Status(201).JSON(fiber.Map{
-		"status":   fiber.StatusCreated,
+	return c.Status(200).JSON(fiber.Map{
+		"status":   fiber.StatusOK,
 		"messsage": "OK",
 	})
 }
